@@ -1,15 +1,15 @@
-"""Build the quieter packages from the source package.
+"""Build the quieter packages in PACKAGES from the source package.
 
 Each output curve = source curve + bass shelf + treble shelf - presence dip - gb. Because of the - gb, the result
 never rises above the source curve: the bass stays at the source level and everything above it is cut.
   gb      bass lift at 50 Hz, relative to the midrange (ISO 226 extra at 50 Hz for this listening level)
   f1, f2  the bass shelf is flat below f1 and fades out by f2 (raised cosine on a log-frequency axis)
-  gt      treble lift reached at 12.5 kHz, fading in from 6.3 kHz. About 60% (package 2) and 45% (package 3) of
+  gt      treble lift reached at 12.5 kHz, fading in from 6.3 kHz. About 60% (packages 2 and 4) and 45% (package 3) of
           the ISO 226 extra at 12.5 kHz, to keep most of StormAudio's rolloff, which guards against listening
           fatigue. A larger lift can make the treble rise above 8 kHz; tools/check.py fails on such a rise.
   gp      extra cut from 1.6 to 5 kHz, fading in from 1 kHz and out by 12.5 kHz (a faster fade-out
           makes the treble rise near 6.4 kHz). ISO 226 says the ear grows
-          relatively more sensitive there as the level drops (0.3 dB at -10, 0.6 dB at -20).
+          relatively more sensitive there as the level drops (0.2 dB at -5, 0.3 dB at -10, 0.6 dB at -20).
 If you change these numbers, update the expected values in tools/check.py to match.
 
 Usage: uv run tools/build.py <source_package_dir> <output_root>"""
@@ -20,7 +20,8 @@ import numpy as np
 
 from targetcurve import Curve, read
 
-PACKAGES = {"stormaudio-minus10dB": dict(gb=4.2, f1=55.0, f2=400.0, gt=1.0, gp=0.3),
+PACKAGES = {"stormaudio-minus5dB": dict(gb=2.1, f1=55.0, f2=400.0, gt=0.5, gp=0.2),
+            "stormaudio-minus10dB": dict(gb=4.2, f1=55.0, f2=400.0, gt=1.0, gp=0.3),
             "stormaudio-minus20dB": dict(gb=8.3, f1=55.0, f2=400.0, gt=1.5, gp=0.6)}
 TREBLE = (6300.0, 12500.0)
 PRESENCE = ((1000.0, 1600.0), (5000.0, 12500.0))  # fade in, fade out
