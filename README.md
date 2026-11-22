@@ -71,13 +71,13 @@ At 50 Hz these packages add the full amount ISO 226 calls for. In the treble the
 - Simple Home Cinema measured Yamaha's YPAO Volume. It added about 1 dB of bass and 1 dB of treble for every 5 dB the volume dropped below the reference setting the article's author chose on his receiver ([measurement](https://simplehomecinema.com/2017/08/05/loudness-correction-and-yamaha-ypao-volume/)). At 10 dB down that comes to about 2 dB each. That is about half of package 2's 4.2 dB of bass and about twice its 1.0 dB of treble.
 - Holman and Kampmann studied loudness controls in 1978 and wrote that "most of them overcompensate" (J. AES 26(7/8), [abstract](https://aes.org/publications/elibrary-page/?id=3261)).
 
-If the quieter presets sound too heavy, start by lowering `gb` and `gt`. In that case you are leaving the standard on purpose, so there is no 100 Hz match to keep.
+[docs/bass-review.md](docs/bass-review.md) sums up independent reviews of the bass, and what to try, in order, if preset 3 sounds boomy. If the quieter presets sound too heavy, start by lowering `gb` and `gt`. In that case you are leaving the standard on purpose, so there is no 100 Hz match to keep.
 
 ## What has not been checked in Dirac Live
 
 - Whether Dirac uses a curve at the level it is drawn. The volume table depends on it.
 - How Dirac draws a curve between breakpoints. The 1/24-octave breakpoints keep the fades within 0.01 dB of their intended shape whether it draws straight lines or a smooth curve.
-- Whether the curves load on receivers other than the Denon AVR-X3800H. Every file is tagged with that device name.
+- Whether the curves load on receivers other than the Denon AVR-X3800H. The four speaker files are tagged with that device name, and the Subwoofer file with `isp-host`.
 
 ## How you may reuse this
 
