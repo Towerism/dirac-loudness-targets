@@ -20,8 +20,8 @@ import numpy as np
 
 from targetcurve import Curve, read
 
-PACKAGES = {"stormaudio-minus10dB": dict(gb=4.2, f1=60.0, f2=250.0, gt=1.0, gp=0.3),
-            "stormaudio-minus20dB": dict(gb=8.3, f1=55.0, f2=350.0, gt=1.5, gp=0.6)}
+PACKAGES = {"stormaudio-minus10dB": dict(gb=4.2, f1=55.0, f2=400.0, gt=1.0, gp=0.3),
+            "stormaudio-minus20dB": dict(gb=8.3, f1=55.0, f2=400.0, gt=1.5, gp=0.6)}
 TREBLE = (6300.0, 12500.0)
 PRESENCE = ((1000.0, 1600.0), (5000.0, 12500.0))  # fade in, fade out
 PER_OCTAVE = 24  # breakpoints per octave inside each fade; at 6 the straight segments miss the treble fade by 0.14 dB
