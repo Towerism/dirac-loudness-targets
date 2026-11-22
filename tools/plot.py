@@ -12,7 +12,7 @@ from targetcurve import read
 
 targets, out = Path(sys.argv[1]), Path(sys.argv[2])
 speaker = sys.argv[3] if len(sys.argv) > 3 else "LCR Cinema Target StormAudio.targetcurve"
-packages = {"stormaudio-based": "#6da7ec", "stormaudio-minus5dB": "#4a8fe0", "stormaudio-minus10dB": "#2a78d6", "stormaudio-minus20dB": "#104281"}
+packages = {"stormaudio-based": "#6da7ec", "stormaudio-minus5dB": "#4a8fe0", "stormaudio-minus10dB": "#2a78d6", "stormaudio-minus15dB": "#1d5dab", "stormaudio-minus20dB": "#104281"}
 f = np.geomspace(10, 20000, 600)
 base = read(targets / "stormaudio-based" / speaker).level(f)
 

@@ -1,5 +1,5 @@
 RUN := uv run --quiet
-PACKAGES := stormaudio-minus5dB stormaudio-minus10dB stormaudio-minus20dB  # the packages tools/build.py makes
+PACKAGES := stormaudio-minus5dB stormaudio-minus10dB stormaudio-minus15dB stormaudio-minus20dB  # the packages tools/build.py makes
 
 .PHONY: build check selftest plot
 

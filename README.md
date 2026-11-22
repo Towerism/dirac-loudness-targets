@@ -1,8 +1,8 @@
 # Dirac Live target curves for listening below reference level
 
-This repo holds four packages of Dirac Live target curves. Each package is one folder in `targets/`, with one curve per speaker group: LCR, Surround, Surround Back, Atmos-Height and Subwoofer. Load the packages you use most (see [Installing the curves](#installing-the-curves)), then pick the one that matches what you watch and how loud you listen.
+This repo holds five packages of Dirac Live target curves. Each package is one folder in `targets/`, with one curve per speaker group: LCR, Surround, Surround Back, Atmos-Height and Subwoofer. Load the packages you use most (see [Installing the curves](#installing-the-curves)), then pick the one that matches what you watch and how loud you listen.
 
-The first package, `stormaudio-based`, is for cinema reference level (0 dB on a receiver calibrated to the film standard). It starts from the Dirac Live targets published by StormAudio, a maker of home-theater processors. Two packages are for watching films about 10 dB and 20 dB below reference. The fourth is for films about 5 dB below reference and for TV about 15 dB below (see [Choosing a preset for TV and streaming](#choosing-a-preset-for-tv-and-streaming)). At lower volume the ear hears less deep bass and less of the highest treble, and becomes slightly more sensitive to the upper midrange. The quieter packages raise the bass and treble relative to the midrange, and lower the upper midrange slightly.
+The first package, `stormaudio-based`, is for cinema reference level (0 dB on a receiver calibrated to the film standard). It starts from the Dirac Live targets published by StormAudio, a maker of home-theater processors. Three packages are for watching films about 10, 15 and 20 dB below reference; the one for 15 dB also suits TV about 25 dB below. Another is for films about 5 dB below reference and for TV about 15 dB below (see [Choosing a preset for TV and streaming](#choosing-a-preset-for-tv-and-streaming)). At lower volume the ear hears less deep bass and less of the highest treble, and becomes slightly more sensitive to the upper midrange. The quieter packages raise the bass and treble relative to the midrange, and lower the upper midrange slightly.
 
 | Preset | Package (folder in `targets/`) | Use when listening at | Bass at 50 Hz vs midrange | Treble above 12.5 kHz vs midrange |
 |---|---|---|---|---|
@@ -10,8 +10,9 @@ The first package, `stormaudio-based`, is for cinema reference level (0 dB on a 
 | 2 | `stormaudio-minus10dB` | about 10 dB below reference | +4.2 dB | +1.0 dB |
 | 3 | `stormaudio-minus20dB` | about 20 dB below reference | +8.3 dB | +1.5 dB |
 | 4 | `stormaudio-minus5dB` | about 5 dB below reference (TV: about 15 dB below) | +2.1 dB | +0.5 dB |
+| 5 | `stormaudio-minus15dB` | about 15 dB below reference (TV: about 25 dB below) | +6.2 dB | +1.25 dB |
 
-![LCR targets for the four packages, and how much each quieter package differs from stormaudio-based](docs/curves.png)
+![LCR targets for the five packages, and how much each quieter package differs from stormaudio-based](docs/curves.png)
 
 ## Installing the curves
 
@@ -23,12 +24,13 @@ The Denon AVR-X3800H stores at most three Dirac Live filters ([Denon manual](htt
 
 The quieter packages lower the midrange, so you raise the volume to bring dialogue back to the same level. Set the master volume to the level you want, in dB from reference, plus the offset for your preset, shown in the Reference row of the table. The offsets are the midrange cuts, which equal each package's bass lift in the first table. The table rounds them to the nearest 0.5 dB, because many receivers change volume in 0.5 dB steps.
 
-| Level you want | Preset 1 | Preset 2 | Preset 3 | Preset 4 |
-|---|---|---|---|---|
-| Reference (0) | 0.0 | +4.0 | +8.5 | +2.0 |
-| −10 | −10.0 | −6.0 | −1.5 | −8.0 |
-| −15 | −15.0 | −11.0 | −6.5 | −13.0 |
-| −20 | −20.0 | −16.0 | −11.5 | −18.0 |
+| Level you want | Preset 1 | Preset 2 | Preset 3 | Preset 4 | Preset 5 |
+|---|---|---|---|---|---|
+| Reference (0) | 0.0 | +4.0 | +8.5 | +2.0 | +6.0 |
+| −10 | −10.0 | −6.0 | −1.5 | −8.0 | −4.0 |
+| −15 | −15.0 | −11.0 | −6.5 | −13.0 | −9.0 |
+| −20 | −20.0 | −16.0 | −11.5 | −18.0 | −14.0 |
+| −25 | −25.0 | −21.0 | −16.5 | −23.0 | −19.0 |
 
 This table assumes that 0 dB on your receiver is calibrated reference level, and that Dirac uses each curve at the level it is drawn (see "What has not been checked in Dirac Live"). To measure the real offsets, play pink noise limited to the midrange (for example 500 Hz to 1 kHz) on preset 1 and note the reading on an SPL meter at your seat. Switch to another preset and raise the volume until the meter shows the same reading. The amount you raised it is the real offset for that preset.
 
@@ -36,7 +38,7 @@ Preset 3 at reference dialogue level needs +8.5 on the volume dial. At that sett
 
 ## Choosing a preset for TV and streaming
 
-For TV, use the preset meant for films 10 dB louder than you listen. At about 15 dB below reference that is preset 4. At about 20 dB below it is preset 2, and at about 10 dB below it is preset 1.
+For TV, use the preset meant for films 10 dB louder than you listen. At about 15 dB below reference that is preset 4. At about 20 dB below it is preset 2, at about 25 dB below it is preset 5, and at about 10 dB below it is preset 1.
 
 Denon's manual says TV content is usually mixed 10 dB below film reference (see [Choosing how much compensation to use](#choosing-how-much-compensation-to-use)). A soundtrack mixed with the speakers 10 dB quieter tends to come out about 10 dB louder. At the same volume setting, a TV show then plays about as loud as a film turned up 10 dB. Your ears need only the bass lift for a drop 10 dB smaller than your volume setting suggests. This README treats series made for streaming services the same way.
 
@@ -44,17 +46,19 @@ Denon's manual says TV content is usually mixed 10 dB below film reference (see 
 |---|---|---|
 | Films | reference | 1 (`stormaudio-based`) |
 | Films | −10 dB | 2 (`stormaudio-minus10dB`) |
+| Films | −15 dB | 5 (`stormaudio-minus15dB`) |
 | Films | −20 dB | 3 (`stormaudio-minus20dB`) |
 | TV and streaming series | −10 dB | 1 (`stormaudio-based`) |
 | TV and streaming series | −15 dB | 4 (`stormaudio-minus5dB`) |
 | TV and streaming series | −20 dB | 2 (`stormaudio-minus10dB`) |
+| TV and streaming series | −25 dB | 5 (`stormaudio-minus15dB`) |
 | Movies on streaming services | any | the film preset for your level; if the bass sounds too heavy, the TV preset for that level |
 
 Some streaming movies carry the cinema mix and others a remix for home, so the table starts them on the film preset.
 
 Before these curves, the owner used Harman-style curves, target curves from Harman's research that slope gently up into the bass. On TV shows heard 15 to 20 dB below reference, a curve with a +10 dB bass lift sounded too heavy, and one with +6 dB sounded better. At those levels the +10 dB curve gave about 1 to 3 dB more bass at 50 Hz than presets 4 and 2 give TV, and the +6 dB curve gave about 1 to 3 dB less ([how these are worked out](docs/bass-review.md#why-the-amount-may-feel-unfamiliar)). So the owner may prefer somewhat less bass than the presets give. This is one listener's memory, so the presets follow Denon's figure.
 
-If TV still sounds heavy, copy a package's entry in `PACKAGES` in `tools/build.py` under a new name with a lower `gb`, and add matching entries to `GB` and `PKGS` in `tools/check.py` (see [Rebuilding or changing the curves](#rebuilding-or-changing-the-curves)). Presets 2 and 4 also serve films, so lowering their own `gb` would lower the bass for those films too.
+If TV still sounds heavy, copy a package's entry in `PACKAGES` in `tools/build.py` under a new name with a lower `gb`, and add matching entries to `GB` and `PKGS` in `tools/check.py` (see [Rebuilding or changing the curves](#rebuilding-or-changing-the-curves)). Presets 2, 4 and 5 also serve films, so lowering their own `gb` would lower the bass for those films too.
 
 ## How the curves are built
 
@@ -65,6 +69,7 @@ If TV still sounds heavy, copy a package's entry in `PACKAGES` in `tools/build.p
 | `stormaudio-based` | 0 | 0 | — | 0 | 5.3 |
 | `stormaudio-minus5dB` (preset 4) | 2.1 | 0.5 | 0.8 | 0.2 | 4.8 |
 | `stormaudio-minus10dB` (preset 2) | 4.2 | 1.0 | 1.7 | 0.3 | 4.3 |
+| `stormaudio-minus15dB` (preset 5) | 6.2 | 1.25 | 2.5 | 0.5 | 4.0 |
 | `stormaudio-minus20dB` (preset 3) | 8.3 | 1.5 | 3.3 | 0.6 | 3.8 |
 
 
