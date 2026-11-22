@@ -2,17 +2,17 @@
 so a mistake in build.py can't hide itself. Prints only failures, and exits 1 if there are any.
 Usage: python3 tools/check.py <source_package_dir> <output_root> [-v]
 
-Check names: AC1 file set, AC2 file parses, AC3 change at key frequencies, AC4 flat cut 600 Hz-8 kHz,
+Check names: AC1 file set, AC2 file parses, AC3 change at key frequencies, AC4 flat cut 600 Hz-1 kHz,
 AC5 same change in every speaker group, AC5b level differences between speakers kept, AC6 LCR slope limit,
 AC7 header and limits unchanged, AC11 never above the source curve,
-AC12 treble never rises above 8 kHz (a rise there would be a peak StormAudio's rolloff doesn't have)."""
+AC12 treble never rises above 4 kHz (a rise there would be a peak StormAudio's rolloff doesn't have)."""
 import math, os, sys
 
 VERBOSE = "-v" in sys.argv
 SRC, OUT = [a for a in sys.argv[1:] if a != "-v"][:2]
 GB = {"stormaudio-minus10dB": 4.2, "stormaudio-minus20dB": 8.3}  # packages are cuts: boost table minus GB
-PKGS = {"stormaudio-minus10dB": {31: 4.2, 50: 4.2, 100: 3.0, 140: 1.5, 200: 0.2, 400: 0.0, 10000: 0.40, 12500: 1.22, 16000: 1.7, 20000: 1.7},
-        "stormaudio-minus20dB": {31: 8.3, 50: 8.3, 100: 6.3, 140: 4.1, 200: 1.7, 400: 0.0, 10000: 0.54, 12500: 1.65, 16000: 2.3, 20000: 2.3}}
+PKGS = {"stormaudio-minus10dB": {31: 4.2, 50: 4.2, 100: 3.0, 140: 1.5, 200: 0.2, 400: 0.0, 1250: -0.14, 2000: -0.3, 3000: -0.3, 4000: -0.3, 6300: -0.26, 8000: 0.13, 10000: 0.72, 12500: 1.0, 16000: 1.0, 20000: 1.0},
+        "stormaudio-minus20dB": {31: 8.3, 50: 8.3, 100: 6.3, 140: 4.1, 200: 1.7, 400: 0.0, 1250: -0.28, 2000: -0.6, 3000: -0.6, 4000: -0.6, 6300: -0.51, 8000: 0.12, 10000: 1.06, 12500: 1.5, 16000: 1.5, 20000: 1.5}}
 LCR, SUR, SUB = "LCR Cinema Target StormAudio.targetcurve", "Surround CinemaTarget StormAudio.targetcurve", "Subwoofer Cinema StormAudio.targetcurve"
 fails = []
 
@@ -52,15 +52,15 @@ for pkg, table in PKGS.items():
         for f, want in table.items():
             if not lo <= f <= hi: continue
             want -= GB[pkg]
-            tol = 0.05 if f == 50 or f >= 12500 else 0.15
+            tol = 0.05 if f == 50 or f >= 1000 else 0.15
             if abs(delta[n](f) - want) > tol: fails.append(f"AC3 {pkg}/{n}: {f} Hz added {delta[n](f):+.3f}, want {want:+.2f}")
-        for f in steps(600, 8000, 24):
+        for f in steps(600, 1000, 24):
             if abs(delta[n](f) + GB[pkg]) > 0.02: fails.append(f"AC4 {pkg}/{n}: {f:.0f} Hz change {delta[n](f):+.3f}, want {-GB[pkg]:+.1f}")
         top = min(new[n][1][-1][0], src[n][1][-1][0])
         for f in steps(10, top, 48):
             if delta[n](f) > 0.001: fails.append(f"AC11 {pkg}/{n}: {f:.0f} Hz is {delta[n](f):+.3f} dB above stormaudio-based (must be a cut)")
         low = math.inf
-        for f in steps(8000, min(hi, top), 48):
+        for f in steps(4000, min(hi, top), 48):
             g = interp(new[n][1], f); low = min(low, g)
             if g - low > 0.1: fails.append(f"AC12 {pkg}/{n}: treble rises {g - low:.2f} dB by {f:.0f} Hz"); break
     if len(delta) != 5: continue
