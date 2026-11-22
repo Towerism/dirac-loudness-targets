@@ -10,8 +10,9 @@ import math, os, sys
 
 VERBOSE = "-v" in sys.argv
 SRC, OUT = [a for a in sys.argv[1:] if a != "-v"][:2]
-GB = {"stormaudio-minus10dB": 4.2, "stormaudio-minus20dB": 8.3}  # packages are cuts: boost table minus GB
-PKGS = {"stormaudio-minus10dB": {31: 4.2, 50: 4.2, 100: 3.3, 140: 2.3, 200: 1.1, 400: 0.0, 1250: -0.14, 2000: -0.3, 3000: -0.3, 4000: -0.3, 6300: -0.26, 8000: 0.13, 10000: 0.72, 12500: 1.0, 16000: 1.0, 20000: 1.0},
+GB = {"stormaudio-minus5dB": 2.1, "stormaudio-minus10dB": 4.2, "stormaudio-minus20dB": 8.3}  # packages are cuts: boost table minus GB
+PKGS = {"stormaudio-minus5dB": {31: 2.1, 50: 2.1, 100: 1.66, 140: 1.15, 200: 0.57, 400: 0.0, 1250: -0.09, 2000: -0.2, 3000: -0.2, 4000: -0.2, 6300: -0.17, 8000: 0.04, 10000: 0.35, 12500: 0.5, 16000: 0.5, 20000: 0.5},
+        "stormaudio-minus10dB": {31: 4.2, 50: 4.2, 100: 3.3, 140: 2.3, 200: 1.1, 400: 0.0, 1250: -0.14, 2000: -0.3, 3000: -0.3, 4000: -0.3, 6300: -0.26, 8000: 0.13, 10000: 0.72, 12500: 1.0, 16000: 1.0, 20000: 1.0},
         "stormaudio-minus20dB": {31: 8.3, 50: 8.3, 100: 6.6, 140: 4.5, 200: 2.3, 400: 0.0, 1250: -0.28, 2000: -0.6, 3000: -0.6, 4000: -0.6, 6300: -0.51, 8000: 0.12, 10000: 1.06, 12500: 1.5, 16000: 1.5, 20000: 1.5}}
 LCR, SUR, SUB = "LCR Cinema Target StormAudio.targetcurve", "Surround CinemaTarget StormAudio.targetcurve", "Subwoofer Cinema StormAudio.targetcurve"
 fails = []
