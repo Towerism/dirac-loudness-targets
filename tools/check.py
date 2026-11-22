@@ -4,14 +4,15 @@ Usage: python3 tools/check.py <source_package_dir> <output_root> [-v]
 
 Check names: AC1 file set, AC2 file parses, AC3 change at key frequencies, AC4 flat cut 600 Hz-8 kHz,
 AC5 same change in every speaker group, AC5b level differences between speakers kept, AC6 LCR slope limit,
-AC7 header and limits unchanged, AC11 never above the source curve."""
+AC7 header and limits unchanged, AC11 never above the source curve,
+AC12 treble never rises above 8 kHz (a rise there would be a peak StormAudio's rolloff doesn't have)."""
 import math, os, sys
 
 VERBOSE = "-v" in sys.argv
 SRC, OUT = [a for a in sys.argv[1:] if a != "-v"][:2]
 GB = {"stormaudio-minus10dB": 4.2, "stormaudio-minus20dB": 8.3}  # packages are cuts: boost table minus GB
-PKGS = {"stormaudio-minus10dB": {31: 4.2, 50: 4.2, 100: 3.0, 140: 1.5, 200: 0.2, 400: 0.0, 10000: 0.85, 12500: 1.7, 16000: 1.7, 20000: 1.7},
-        "stormaudio-minus20dB": {31: 8.3, 50: 8.3, 100: 6.3, 140: 4.1, 200: 1.7, 400: 0.0, 10000: 1.65, 12500: 3.3, 16000: 3.3, 20000: 3.3}}
+PKGS = {"stormaudio-minus10dB": {31: 4.2, 50: 4.2, 100: 3.0, 140: 1.5, 200: 0.2, 400: 0.0, 10000: 0.40, 12500: 1.22, 16000: 1.7, 20000: 1.7},
+        "stormaudio-minus20dB": {31: 8.3, 50: 8.3, 100: 6.3, 140: 4.1, 200: 1.7, 400: 0.0, 10000: 0.54, 12500: 1.65, 16000: 2.3, 20000: 2.3}}
 LCR, SUR, SUB = "LCR Cinema Target StormAudio.targetcurve", "Surround CinemaTarget StormAudio.targetcurve", "Subwoofer Cinema StormAudio.targetcurve"
 fails = []
 
@@ -58,6 +59,10 @@ for pkg, table in PKGS.items():
         top = min(new[n][1][-1][0], src[n][1][-1][0])
         for f in steps(10, top, 48):
             if delta[n](f) > 0.001: fails.append(f"AC11 {pkg}/{n}: {f:.0f} Hz is {delta[n](f):+.3f} dB above stormaudio-based (must be a cut)")
+        low = math.inf
+        for f in steps(8000, min(hi, top), 48):
+            g = interp(new[n][1], f); low = min(low, g)
+            if g - low > 0.1: fails.append(f"AC12 {pkg}/{n}: treble rises {g - low:.2f} dB by {f:.0f} Hz"); break
     if len(delta) != 5: continue
     for f in steps(20, 20000, 6):
         for n in names:
@@ -74,5 +79,5 @@ for pkg, table in PKGS.items():
     if slope > 11: fails.append(f"AC6 {pkg}: LCR steepest slope {slope:.1f} dB/oct > 11")
     if VERBOSE: print(f"{pkg}: LCR steepest 90-250 Hz slope {slope:.1f} dB/oct; LCR added @50Hz {delta[LCR](50):+.2f}, @12.5k {delta[LCR](12500):+.2f}")
 
-print("\n".join(fails) if fails else ("ALL CHECKS PASS (AC1-AC7, AC5b)" if VERBOSE else ""), end="\n" if fails or VERBOSE else "")
+print("\n".join(fails) if fails else ("ALL CHECKS PASS (AC1-AC7, AC5b, AC11, AC12)" if VERBOSE else ""), end="\n" if fails or VERBOSE else "")
 sys.exit(1 if fails else 0)

@@ -4,7 +4,9 @@ Each output curve = source curve + bass shelf + treble shelf - gb. Because of th
 above the source curve: the bass stays at the source level and everything above it is cut.
   gb      bass lift at 50 Hz, relative to the midrange (ISO 226 extra at 50 Hz for this listening level)
   f1, f2  the bass shelf is flat below f1 and fades out by f2 (raised cosine on a log-frequency axis)
-  gt      treble lift above 12.5 kHz, fading in from 8 kHz (ISO 226 extra at 12.5 kHz)
+  gt      treble lift reached at 16 kHz, fading in from 8 kHz. Package 2 uses the ISO 226 extra at 12.5 kHz (1.7).
+          Package 3 is capped at 2.3 (ISO asks for 3.3): more makes the treble rise between 9 and 13 kHz,
+          a peak that StormAudio's rolloff doesn't have. tools/check.py fails on such a rise.
 If you change these numbers, update the expected values in tools/check.py to match.
 
 Usage: uv run tools/build.py <source_package_dir> <output_root>"""
@@ -16,8 +18,8 @@ import numpy as np
 from targetcurve import Curve, read
 
 PACKAGES = {"stormaudio-minus10dB": dict(gb=4.2, f1=60.0, f2=250.0, gt=1.7),
-            "stormaudio-minus20dB": dict(gb=8.3, f1=55.0, f2=350.0, gt=3.3)}
-TREBLE = (8000.0, 12500.0)
+            "stormaudio-minus20dB": dict(gb=8.3, f1=55.0, f2=350.0, gt=2.3)}
+TREBLE = (8000.0, 16000.0)
 PER_OCTAVE = 24  # breakpoints per octave inside each fade; at 6 the straight segments miss the treble fade by 0.14 dB
 
 
